@@ -1,24 +1,16 @@
 import wx
 
 class PanelInicio(wx.Panel):
-    def __init__(self, parent, sistema):
+
+    def __init__(self, parent):
         super().__init__(parent)
-        self.sistema = sistema
+        
+        texto_titulo = wx.StaticText(self, label="Bienvenido a ClickStock")
 
-        vbox = wx.BoxSizer(wx.VERTICAL)
+        fuente = wx.Font(18, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD)
 
-        titulo = wx.StaticText(self, label="Bienvenido a ClickStock")
-        titulo.SetFont(wx.Font(18, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD))
-        vbox.Add(titulo, 0, wx.ALL | wx.CENTER, 20)
+        texto_titulo.SetFont(fuente)
 
-        btn_categoria = wx.Button(self, label="Categorias")
-        btn_productos = wx.Button(self, label="Productos")
-        btn_stock = wx.Button(self, label="Stock")
-        btn_reportes = wx.Button(self, label="Reportes")
-
-        vbox.Add(btn_categoria, 0, wx.ALL | wx.EXPAND, 10)
-        vbox.Add(btn_productos, 0, wx.ALL | wx.EXPAND, 10)
-        vbox.Add(btn_stock, 0, wx.ALL | wx.EXPAND, 10)
-        vbox.Add(btn_reportes, 0, wx.ALL | wx.EXPAND, 10)
-
-        self.SetSizer(vbox)
+        sizer = wx.BoxSizer(wx.VERTICAL)
+        sizer.Add(texto_titulo, 0, wx.ALL | wx.CENTER, 20)
+        self.SetSizer(sizer)
