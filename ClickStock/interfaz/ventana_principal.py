@@ -1,10 +1,14 @@
 import wx
 from interfaz.panel_inicio import PanelInicio
+from interfaz.panel_categorias import PanelCategorias
+from interfaz.panel_productos import PanelProductos
 
 class VentanaPrincipal(wx.Frame):
-    def __init__(self):
+    def __init__(self, sistema):
         super().__init__(None, title="ClickStock", size=(1000, 600))
-    
+        
+        self.sistema = sistema
+
         panel_principal = wx.Panel(self)
 
         #Sizer horizontal para dividir la ventana en dos partes
@@ -47,22 +51,27 @@ class VentanaPrincipal(wx.Frame):
         self.panel_menu.SetSizer(sizer_menu)
 
         #Eventos para los botones
-        boton_inicio.Bind(wx.EVT_BUTTON, lambda event: self.mostrar_inicio())
-        boton_categorias.Bind(wx.EVT_BUTTON, lambda event: self.mostrar_categorias())
-        boton_productos.Bind(wx.EVT_BUTTON, lambda event: self.mostrar_productos())
-        boton_stock.Bind(wx.EVT_BUTTON, lambda event: self.mostrar_stock())
-        boton_reportes.Bind(wx.EVT_BUTTON, lambda event: self.mostrar_reportes())
+        boton_inicio.Bind(wx.EVT_BUTTON, self.mostrar_inicio)
+        boton_categorias.Bind(wx.EVT_BUTTON, self.mostrar_categorias)
+        boton_productos.Bind(wx.EVT_BUTTON, self.mostrar_productos)
 
-    def cambiar_panel(self, nuevo_panel):
+    def cambiar_panel(self, constructor_panel):
         #Eliminar el panel actual
         for child in self.panel_contenido.GetChildren():
             child.Destroy()
+        
+        nuevo_panel = constructor_panel(self.panel_contenido)
         
         sizer = wx.BoxSizer(wx.VERTICAL)
         sizer.Add(nuevo_panel, 1, wx.EXPAND)
         self.panel_contenido.SetSizer(sizer)
         self.panel_contenido.Layout()
     
-    def mostrar_inicio(self):
-        panel = PanelInicio(self.panel_contenido)
-        self.cambiar_panel(panel)
+    def mostrar_inicio(self, event):
+        self.cambiar_panel(PanelInicio)
+    
+    def mostrar_categorias(self, event):
+        self.cambiar_panel(lambda parent: PanelCategorias(parent, self.sistema))
+    
+    def mostrar_productos(self, event):
+        self.cambiar_panel(lambda parent: PanelProductos(parent, self.sistema))
