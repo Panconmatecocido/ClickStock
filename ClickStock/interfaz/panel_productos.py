@@ -20,6 +20,7 @@ class PanelProductos(wx.Panel):
         self.combo_categoria = wx.ComboBox(self, style=wx.CB_READONLY)
 
         self.cargar_categorias()
+        self.lista_productos = wx.ListBox(self)
 
         boton_agregar = wx.Button(self, label="Agregar")
         boton_eliminar = wx.Button(self, label="Eliminar")
@@ -29,8 +30,6 @@ class PanelProductos(wx.Panel):
         boton_eliminar.Bind(wx.EVT_BUTTON, self.eliminar_producto)
         boton_editar.Bind(wx.EVT_BUTTON, self.editar_producto)
         self.lista_productos.Bind(wx.EVT_LISTBOX, self.seleccionar_producto)
-
-        self.lista_productos = wx.ListBox(self)
 
         sizer_principal = wx.BoxSizer(wx.VERTICAL)
         sizer_principal.Add(texto_nombre, 0, wx.ALL, 5)
@@ -122,9 +121,10 @@ class PanelProductos(wx.Panel):
         for producto in self.sistema.obtener_productos():
 
             texto = (
-            f"{producto.nombre} - "
-            f"${producto.precio} - "
-            f"{producto.categoria.nombre}")
+            f"{producto.nombre} | "
+            f"${producto.precio} | "
+            f"{producto.categoria.nombre} | "
+            f"stock: {producto.stock}" ) 
 
             self.lista_productos.Append(texto)
     

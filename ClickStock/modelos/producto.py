@@ -6,6 +6,8 @@ class Producto:
         self.precio = precio
         self.categoria = categoria
 
+        self.stock = 0
+
     def __str__(self):
 
         return self.nombre
