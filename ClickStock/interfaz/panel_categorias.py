@@ -35,6 +35,8 @@ class PanelCategorias(wx.Panel):
 
         self.SetSizer(sizer)
 
+        self.actualizar_lista()
+
     def agregar_categoria(self, event):
         nombre = self.input_categoria.GetValue()
         if nombre == "":
@@ -42,6 +44,7 @@ class PanelCategorias(wx.Panel):
             
         categoria = Categoria(nombre)
         self.sistema.agregar_categoria(categoria)
+        self.sistema.guardar_categorias()
         self.actualizar_lista()
         self.input_categoria.SetValue("")
     
@@ -51,6 +54,7 @@ class PanelCategorias(wx.Panel):
             return
         
         self.sistema.eliminar_categoria(indice)
+        self.sistema.guardar_categorias()
         self.actualizar_lista()
     
     def actualizar_lista(self):
@@ -77,4 +81,5 @@ class PanelCategorias(wx.Panel):
         
         categoria = self.sistema.obtener_categorias()[indice]
         categoria.nombre = nuevo_nombre
+        self.sistema.guardar_categorias()
         self.actualizar_lista()

@@ -18,9 +18,10 @@ class PanelProductos(wx.Panel):
 
         texto_categoria = wx.StaticText(self, label="Categoría")
         self.combo_categoria = wx.ComboBox(self, style=wx.CB_READONLY)
+        self.lista_productos = wx.ListBox(self)
 
         self.cargar_categorias()
-        self.lista_productos = wx.ListBox(self)
+        self.actualizar_lista()
 
         boton_agregar = wx.Button(self, label="Agregar")
         boton_eliminar = wx.Button(self, label="Eliminar")
@@ -44,6 +45,9 @@ class PanelProductos(wx.Panel):
         sizer_principal.Add(self.lista_productos, 1, wx.EXPAND | wx.ALL, 5)
 
         self.SetSizer(sizer_principal)
+
+        self.actualizar_lista()
+
 
     def cargar_categorias(self):
 
