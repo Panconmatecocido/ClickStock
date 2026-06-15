@@ -12,7 +12,11 @@ class SistemaStock:
         self.cargar_productos()
     
     def agregar_categoria(self, categoria):
+        for c in self.categorias:
+            if c.nombre == categoria.nombre:
+                return False
         self.categorias.append(categoria)
+        return True
 
     def obtener_categorias(self):
         return self.categorias
@@ -21,8 +25,12 @@ class SistemaStock:
         del self.categorias[indice]
 
     def agregar_producto(self, producto):
+        for p in self.productos:
+            if p.nombre == producto.nombre:
+                return False
         self.productos.append(producto)
-    
+        return True
+
     def obtener_productos(self):
         return self.productos
     
@@ -35,12 +43,12 @@ class SistemaStock:
         for categoria in self.categorias:
             datos.append({"nombre": categoria.nombre})
        
-        with open("datos/categorias.json", "w", encoding="utf-8") as archivo:
+        with open("ClickStock/datos/categorias.json", "w", encoding="utf-8") as archivo:
             json.dump(datos, archivo, indent=4, ensure_ascii=False)
 
     def cargar_categorias(self):
         try:
-            with open("datos/categorias.json", "r", encoding="utf-8") as archivo:
+            with open("ClickStock/datos/categorias.json", "r", encoding="utf-8") as archivo:
                 datos = json.load(archivo)
 
                 for item in datos:
@@ -60,7 +68,7 @@ class SistemaStock:
                 "stock": producto.stock
             })
         
-        with open("datos/productos.json", "w", encoding="utf-8") as archivo:
+        with open("ClickStock/datos/productos.json", "w", encoding="utf-8") as archivo:
             json.dump(datos, archivo, indent=4, ensure_ascii=False)
 
     def cargar_productos(self):
@@ -68,7 +76,7 @@ class SistemaStock:
         try:
 
             with open(
-                "datos/productos.json",
+                "ClickStock/datos/productos.json",
                 "r",
                 encoding="utf-8"
             ) as archivo:
@@ -78,12 +86,14 @@ class SistemaStock:
                 for item in datos:
 
                     categoria = next(
-
-                        c for c in self.categorias
-
-                        if c.nombre ==
-                        item["categoria"]
+                        (
+                            c for c in self.categorias
+                            if c.nombre == item["categoria"]
+                        ),
+                        None
                     )
+                    if categoria is None:
+                        continue
 
                     producto = Producto(
 
@@ -103,3 +113,9 @@ class SistemaStock:
         except FileNotFoundError:
 
             pass
+    
+    def buscar_producto(self, nombre):
+        for producto in self.productos:
+            if producto.nombre == nombre:
+                return producto
+        return None

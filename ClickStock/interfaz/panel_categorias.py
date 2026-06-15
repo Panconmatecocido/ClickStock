@@ -8,7 +8,7 @@ class PanelCategorias(wx.Panel):
 
         texto = wx.StaticText(self, label="Nombre categoría")
 
-        self.input_categoria = wx.TextCtrl(self)
+        self.input_categoria = wx.TextCtrl(self, style=wx.TE_PROCESS_ENTER)
 
         boton_agregar = wx.Button(self, label="Agregar")
         boton_eliminar = wx.Button(self, label="Eliminar")
@@ -17,6 +17,7 @@ class PanelCategorias(wx.Panel):
         self.lista_categorias = wx.ListBox(self)
 
         boton_agregar.Bind(wx.EVT_BUTTON, self.agregar_categoria)
+        self.input_categoria.Bind(wx.EVT_TEXT_ENTER, self.agregar_categoria)
         boton_eliminar.Bind(wx.EVT_BUTTON, self.eliminar_categoria)
         boton_editar.Bind(wx.EVT_BUTTON, self.editar_categoria)
         self.lista_categorias.Bind(wx.EVT_LISTBOX, self.seleccionar_categoria)
@@ -37,13 +38,20 @@ class PanelCategorias(wx.Panel):
 
         self.actualizar_lista()
 
+        print("Categorias", len(self.sistema.obtener_categorias()))
+
     def agregar_categoria(self, event):
-        nombre = self.input_categoria.GetValue()
+        nombre = self.input_categoria.GetValue().strip()
         if nombre == "":
              return
             
         categoria = Categoria(nombre)
-        self.sistema.agregar_categoria(categoria)
+        
+        resultado = self.sistema.agregar_categoria(categoria)
+        if not resultado:
+            wx.MessageBox("La categoría ya existe", "Error", wx.OK | wx.ICON_ERROR)
+            return
+        
         self.sistema.guardar_categorias()
         self.actualizar_lista()
         self.input_categoria.SetValue("")
@@ -56,6 +64,7 @@ class PanelCategorias(wx.Panel):
         self.sistema.eliminar_categoria(indice)
         self.sistema.guardar_categorias()
         self.actualizar_lista()
+        self.input_categoria.SetValue("")
     
     def actualizar_lista(self):
         self.lista_categorias.Clear()
@@ -75,7 +84,7 @@ class PanelCategorias(wx.Panel):
         if indice == wx.NOT_FOUND:
             return
         
-        nuevo_nombre = self.input_categoria.GetValue()
+        nuevo_nombre = self.input_categoria.GetValue().strip()
         if nuevo_nombre == "":
             return
         

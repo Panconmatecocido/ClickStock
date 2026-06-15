@@ -1,1 +1,17 @@
-[]
+[
+    {
+        "nombre": "Bodega"
+    },
+    {
+        "nombre": "Panaderia"
+    },
+    {
+        "nombre": "Perfumeria"
+    },
+    {
+        "nombre": "Verduleria"
+    },
+    {
+        "nombre": "Almacen"
+    }
+]

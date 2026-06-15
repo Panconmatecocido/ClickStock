@@ -51,16 +51,26 @@ class PanelProductos(wx.Panel):
 
     def cargar_categorias(self):
 
+        if self.combo_categoria.GetCount() > 0:
+            wx.MessageBox("No hay categorias cargadas.\nDebe crear una categoría primero.", "Información", wx.OK | wx.ICON_INFORMATION)
+
         self.combo_categoria.Clear()
 
         for categoria in self.sistema.obtener_categorias():
 
             self.combo_categoria.Append(categoria.nombre)
+        
+        if self.combo_categoria.GetCount() > 0:
+            self.combo_categoria.SetSelection(0)
 
     def agregar_producto(self, event):
 
-        nombre = self.input_nombre.GetValue()
-        precio_texto = self.input_precio.GetValue()
+        if len(self.sistema.obtener_categorias()) == 0:
+            wx.MessageBox("Debe agregar una categoría antes de agregar productos", "Error", wx.OK | wx.ICON_ERROR)
+            return
+
+        nombre = self.input_nombre.GetValue().strip()
+        precio_texto = self.input_precio.GetValue().strip()
         categoria_indice = self.combo_categoria.GetSelection()
 
         if nombre == "":
@@ -73,12 +83,28 @@ class PanelProductos(wx.Panel):
             return
 
         precio = float(precio_texto)
+        try:
+            precio = float(precio_texto)
+        except ValueError:
+            wx.MessageBox("El precio debe ser un número válido", "Error", wx.OK | wx.ICON_ERROR)
+            return
+        
+        if precio < 0:
+            wx.MessageBox("El precio no puede ser negativo", "Error", wx.OK | wx.ICON_ERROR)
+            return
+        
         categoria = self.sistema.obtener_categorias()[categoria_indice]
+        
         producto = Producto(nombre, precio, categoria)
        
-        self.sistema.agregar_producto(producto)
+        resultado = self.sistema.agregar_producto(producto)
+        if not resultado:
+            wx.MessageBox("El producto ya existe", "Error", wx.OK | wx.ICON_ERROR)
+            return
+
         self.actualizar_lista()
         self.limpiar_campos()
+        self.sistema.guardar_productos()
     
     def eliminar_producto(self, event):
         indice = self.lista_productos.GetSelection()
@@ -88,6 +114,7 @@ class PanelProductos(wx.Panel):
 
         self.sistema.eliminar_producto(indice)
         self.actualizar_lista()
+        self.sistema.guardar_productos()
 
     def editar_producto(self, event):
         indice = self.lista_productos.GetSelection()
@@ -95,8 +122,8 @@ class PanelProductos(wx.Panel):
         if indice == wx.NOT_FOUND:
             return
 
-        nombre = self.input_nombre.GetValue()
-        precio_texto = self.input_precio.GetValue()
+        nombre = self.input_nombre.GetValue().strip()
+        precio_texto = self.input_precio.GetValue().strip()
         categoria_indice = self.combo_categoria.GetSelection()
 
         if nombre == "":
@@ -117,6 +144,7 @@ class PanelProductos(wx.Panel):
 
         self.actualizar_lista()
         self.limpiar_campos()
+        self.sistema.guardar_productos()
 
     def actualizar_lista(self):
 
@@ -126,7 +154,7 @@ class PanelProductos(wx.Panel):
 
             texto = (
             f"{producto.nombre} | "
-            f"${producto.precio} | "
+            f"${producto.precio:.2f} | "
             f"{producto.categoria.nombre} | "
             f"stock: {producto.stock}" ) 
 

@@ -16,6 +16,10 @@ class PanelReportes(wx.Panel):
         boton_generar = wx.Button(self, label="Generar Reporte")
         boton_imprimir = wx.Button(self, label="Imprimir Reporte")
 
+        bitmap_impresora = wx.ArtProvider.GetBitmap(wx.ART_PRINT, wx.ART_BUTTON)
+
+        boton_imprimir.SetBitmap(bitmap_impresora)
+
         self.texto_reporte = wx.TextCtrl(self, style=wx.TE_MULTILINE | wx.TE_READONLY)
 
         boton_generar.Bind(wx.EVT_BUTTON, self.generar_reporte)
@@ -51,8 +55,12 @@ class PanelReportes(wx.Panel):
             reporte += (
                 f"{producto.nombre} | "
                 f"{producto.categoria.nombre} | "
-                f"{producto.stock}\n"
+                f"${producto.precio:.2f} | "
+                f"Stock: {producto.stock}\n"
             )
+        
+        if reporte == "":
+            reporte = "No existen productos para mostrar."
         
         self.texto_reporte.SetValue(reporte)
 
