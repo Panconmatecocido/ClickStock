@@ -1,4 +1,5 @@
 import wx
+import os
 from interfaz.panel_inicio import PanelInicio
 from interfaz.panel_categorias import PanelCategorias
 from interfaz.panel_productos import PanelProductos
@@ -8,14 +9,22 @@ from interfaz.panel_reportes import PanelReportes
 class VentanaPrincipal(wx.Frame):
     def __init__(self, sistema):
         super().__init__(None, title="ClickStock", size=(1000, 600))
-        
-        self.sistema = sistema
+        #Icono de la ventana
+        ruta_icono = os.path.join(
+            os.path.dirname(__file__),   # carpeta "interfaz"
+            "..",                        # subir a la carpeta principal
+            "Imagen",
+            "logo.png"
+        )
+        ruta_icono = os.path.abspath(ruta_icono)
+        self.SetIcon(wx.Icon(ruta_icono, wx.BITMAP_TYPE_PNG))
 
+        self.sistema = sistema
         panel_principal = wx.Panel(self)
 
         #Sizer horizontal para dividir la ventana en dos partes
         sizer_horizontal = wx.BoxSizer(wx.HORIZONTAL)
-
+        
         #Panel izquierdo (menú)
         self.panel_menu = wx.Panel(panel_principal, size=(200, -1))
         self.panel_menu.SetBackgroundColour("#2c3E50")

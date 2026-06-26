@@ -35,12 +35,12 @@ class SistemaStock:
         for categoria in self.categorias:
             datos.append({"nombre": categoria.nombre})
        
-        with open("datos/categorias.json", "w", encoding="utf-8") as archivo:
+        with open("ClickStock/datos/categorias.json", "w", encoding="utf-8") as archivo:
             json.dump(datos, archivo, indent=4, ensure_ascii=False)
 
     def cargar_categorias(self):
         try:
-            with open("datos/categorias.json", "r", encoding="utf-8") as archivo:
+            with open("ClickStock/datos/categorias.json", "r", encoding="utf-8") as archivo:
                 datos = json.load(archivo)
 
                 for item in datos:
@@ -60,7 +60,7 @@ class SistemaStock:
                 "stock": producto.stock
             })
         
-        with open("datos/productos.json", "w", encoding="utf-8") as archivo:
+        with open("ClickStock/datos/productos.json", "w", encoding="utf-8") as archivo:
             json.dump(datos, archivo, indent=4, ensure_ascii=False)
 
     def cargar_productos(self):
@@ -68,7 +68,7 @@ class SistemaStock:
         try:
 
             with open(
-                "datos/productos.json",
+                "ClickStock/datos/productos.json",
                 "r",
                 encoding="utf-8"
             ) as archivo:
