@@ -6,9 +6,12 @@ class PanelCategorias(wx.Panel):
         super().__init__(parent)
         self.sistema = sistema
 
-        texto = wx.StaticText(self, label="Nombre categoría")
+        texto = wx.StaticText(self, label="Agregar Categorías")
+        fuente = wx.Font(14, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD)
+        texto.SetFont(fuente)
 
         self.input_categoria = wx.TextCtrl(self, style=wx.TE_PROCESS_ENTER)
+        self.input_categoria.SetHint("Ingrese nueva categoría")
 
         boton_agregar = wx.Button(self, label="Agregar")
         boton_eliminar = wx.Button(self, label="Eliminar")
@@ -17,41 +20,42 @@ class PanelCategorias(wx.Panel):
         self.lista_categorias = wx.ListBox(self)
 
         boton_agregar.Bind(wx.EVT_BUTTON, self.agregar_categoria)
-        self.input_categoria.Bind(wx.EVT_TEXT_ENTER, self.agregar_categoria)
         boton_eliminar.Bind(wx.EVT_BUTTON, self.eliminar_categoria)
         boton_editar.Bind(wx.EVT_BUTTON, self.editar_categoria)
         self.lista_categorias.Bind(wx.EVT_LISTBOX, self.seleccionar_categoria)
+       
+        #Fila Superior
+        sizer_superior = wx.BoxSizer(wx.HORIZONTAL)
+        sizer_superior.Add(self.input_categoria, 1, wx.EXPAND | wx.RIGHT, 10)
+        sizer_superior.Add(boton_agregar, 0, wx.ALIGN_CENTER_VERTICAL)
 
-        sizer = wx.BoxSizer(wx.VERTICAL)
+        #Bloque de Botones Derechos
+        sizer_botones_derechos = wx.BoxSizer(wx.VERTICAL)
+        sizer_botones_derechos.Add(boton_editar, 0, wx.EXPAND | wx.BOTTOM, 10)
+        sizer_botones_derechos.Add(boton_eliminar, 0, wx.EXPAND)
 
-        sizer.Add(texto, 0, wx.ALL, 10)
-        sizer.Add(self.input_categoria, 0, wx.EXPAND | wx.ALL, 10)
-        sizer.Add(self.lista_categorias, 1, wx.EXPAND | wx.ALL, 10)
-        
-        sizer_botones = wx.BoxSizer(wx.HORIZONTAL)
-        sizer_botones.Add(boton_agregar, 0, wx.EXPAND | wx.ALL, 5)
-        sizer_botones.Add(boton_eliminar, 0, wx.EXPAND | wx.ALL, 5)
-        sizer_botones.Add(boton_editar, 0, wx.ALL, 5)
-        sizer.Add(sizer_botones, 0, wx.ALL, 5)
+        #Fila Inferior
+        sizer_inferior = wx.BoxSizer(wx.HORIZONTAL)
+        sizer_inferior.Add(self.lista_categorias, 1, wx.EXPAND | wx.RIGHT, 10)
+        sizer_inferior.Add(sizer_botones_derechos, 0, wx.ALIGN_TOP) # Alineados arriba al lado de la lista
 
-        self.SetSizer(sizer)
+        #Sizer Principal
+        sizer_principal = wx.BoxSizer(wx.VERTICAL)
+        sizer_principal.Add(texto, 0, wx.TOP | wx.LEFT | wx.RIGHT, 15)
+        sizer_principal.Add(sizer_superior, 0, wx.EXPAND | wx.ALL, 15)
+        sizer_principal.Add(sizer_inferior, 1, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, 15)
+
+        self.SetSizer(sizer_principal)
 
         self.actualizar_lista()
 
-        print("Categorias", len(self.sistema.obtener_categorias()))
-
     def agregar_categoria(self, event):
-        nombre = self.input_categoria.GetValue().strip()
+        nombre = self.input_categoria.GetValue()
         if nombre == "":
              return
             
         categoria = Categoria(nombre)
-        
-        resultado = self.sistema.agregar_categoria(categoria)
-        if not resultado:
-            wx.MessageBox("La categoría ya existe", "Error", wx.OK | wx.ICON_ERROR)
-            return
-        
+        self.sistema.agregar_categoria(categoria)
         self.sistema.guardar_categorias()
         self.actualizar_lista()
         self.input_categoria.SetValue("")
@@ -64,7 +68,6 @@ class PanelCategorias(wx.Panel):
         self.sistema.eliminar_categoria(indice)
         self.sistema.guardar_categorias()
         self.actualizar_lista()
-        self.input_categoria.SetValue("")
     
     def actualizar_lista(self):
         self.lista_categorias.Clear()
@@ -84,7 +87,7 @@ class PanelCategorias(wx.Panel):
         if indice == wx.NOT_FOUND:
             return
         
-        nuevo_nombre = self.input_categoria.GetValue().strip()
+        nuevo_nombre = self.input_categoria.GetValue()
         if nuevo_nombre == "":
             return
         

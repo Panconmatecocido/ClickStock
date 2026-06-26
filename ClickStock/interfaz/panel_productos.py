@@ -5,16 +5,19 @@ from modelos.producto import Producto
 class PanelProductos(wx.Panel):
 
     def __init__(self, parent, sistema):
-
         super().__init__(parent)
 
         self.sistema = sistema
-    
-        texto_nombre = wx.StaticText(self, label="Nombre producto")
-        self.input_nombre = wx.TextCtrl(self)
 
-        texto_precio = wx.StaticText(self, label="Precio")
+        titulo = wx.StaticText(self, label="Agregar Productos")
+        fuente_titulo = wx.Font(14, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD)
+        titulo.SetFont(fuente_titulo)
+
+        self.input_nombre = wx.TextCtrl(self)
+        self.input_nombre.SetHint("Agregar nuevo producto")
+
         self.input_precio = wx.TextCtrl(self)
+        self.input_precio.SetHint("Precio")
 
         texto_categoria = wx.StaticText(self, label="Categoría")
         self.combo_categoria = wx.ComboBox(self, style=wx.CB_READONLY)
@@ -32,20 +35,25 @@ class PanelProductos(wx.Panel):
         boton_editar.Bind(wx.EVT_BUTTON, self.editar_producto)
         self.lista_productos.Bind(wx.EVT_LISTBOX, self.seleccionar_producto)
 
+        sizer_botones = wx.BoxSizer(wx.HORIZONTAL)
+        sizer_botones.Add(boton_agregar, 0, wx.RIGHT, 5)
+        sizer_botones.Add(boton_eliminar, 0, wx.RIGHT, 5)
+        sizer_botones.Add(boton_editar, 0, wx.RIGHT, 5)
+
         sizer_principal = wx.BoxSizer(wx.VERTICAL)
-        sizer_principal.Add(texto_nombre, 0, wx.ALL, 5)
-        sizer_principal.Add(self.input_nombre, 0, wx.EXPAND | wx.ALL, 5)
-        sizer_principal.Add(texto_precio, 0, wx.ALL, 5)
-        sizer_principal.Add(self.input_precio, 0, wx.EXPAND | wx.ALL, 5)
-        sizer_principal.Add(texto_categoria, 0, wx.ALL, 5)
-        sizer_principal.Add(self.combo_categoria, 0, wx.EXPAND | wx.ALL, 5)
-        sizer_principal.Add(boton_agregar, 0, wx.ALL, 5)
-        sizer_principal.Add(boton_eliminar, 0, wx.ALL, 5)
-        sizer_principal.Add(boton_editar, 0, wx.ALL, 5)
-        sizer_principal.Add(self.lista_productos, 1, wx.EXPAND | wx.ALL, 5)
+        
+        sizer_principal.Add(titulo, 0, wx.ALL, 10)
+        
+        sizer_principal.Add(self.input_nombre, 0, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, 10)
+        sizer_principal.Add(self.input_precio, 0, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, 10)
+        
+        sizer_principal.Add(texto_categoria, 0, wx.LEFT | wx.RIGHT | wx.BOTTOM, 5)
+        sizer_principal.Add(self.combo_categoria, 0, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, 10)
+        
+        sizer_principal.Add(sizer_botones, 0, wx.LEFT | wx.RIGHT | wx.BOTTOM, 10)
+        sizer_principal.Add(self.lista_productos, 1, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, 10)
 
         self.SetSizer(sizer_principal)
-
         self.actualizar_lista()
 
 

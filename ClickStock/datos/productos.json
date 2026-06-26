@@ -6,15 +6,9 @@
         "stock": 10
     },
     {
-        "nombre": "Cebolla",
-        "precio": 800.0,
-        "categoria": "Verduleria",
-        "stock": 30
-    },
-    {
-        "nombre": "Trapo",
-        "precio": 1000.0,
-        "categoria": "Limpieza",
-        "stock": 20
+        "nombre": "Sidra",
+        "precio": 1500.0,
+        "categoria": "Bodega",
+        "stock": 27
     }
 ]
