@@ -23,25 +23,23 @@ class PanelCategorias(wx.Panel):
         boton_eliminar.Bind(wx.EVT_BUTTON, self.eliminar_categoria)
         boton_editar.Bind(wx.EVT_BUTTON, self.editar_categoria)
         self.lista_categorias.Bind(wx.EVT_LISTBOX, self.seleccionar_categoria)
-
-# --- ESTRUCTURA DE SIZERS (Diseño Visual) ---
-        
-        # 1. Fila Superior: [ Input Texto ] [ Botón Agregar ]
+       
+        #Fila Superior
         sizer_superior = wx.BoxSizer(wx.HORIZONTAL)
         sizer_superior.Add(self.input_categoria, 1, wx.EXPAND | wx.RIGHT, 10)
         sizer_superior.Add(boton_agregar, 0, wx.ALIGN_CENTER_VERTICAL)
 
-        # 2. Bloque de Botones Derechos: [Editar] sobre [Eliminar]
+        #Bloque de Botones Derechos
         sizer_botones_derechos = wx.BoxSizer(wx.VERTICAL)
         sizer_botones_derechos.Add(boton_editar, 0, wx.EXPAND | wx.BOTTOM, 10)
         sizer_botones_derechos.Add(boton_eliminar, 0, wx.EXPAND)
 
-        # 3. Fila Inferior: [ ListBox (Ocupa el resto) ] [ Bloque Botones Derechos ]
+        #Fila Inferior
         sizer_inferior = wx.BoxSizer(wx.HORIZONTAL)
         sizer_inferior.Add(self.lista_categorias, 1, wx.EXPAND | wx.RIGHT, 10)
         sizer_inferior.Add(sizer_botones_derechos, 0, wx.ALIGN_TOP) # Alineados arriba al lado de la lista
 
-        # 4. Sizer Principal (Vertical) que junta todo
+        #Sizer Principal
         sizer_principal = wx.BoxSizer(wx.VERTICAL)
         sizer_principal.Add(texto, 0, wx.TOP | wx.LEFT | wx.RIGHT, 15)
         sizer_principal.Add(sizer_superior, 0, wx.EXPAND | wx.ALL, 15)

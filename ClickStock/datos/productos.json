@@ -6,9 +6,9 @@
         "stock": 20
     },
     {
-        "nombre": "Cebolla",
-        "precio": 800.0,
-        "categoria": "Verduleria",
-        "stock": 50
+        "nombre": "Sidra",
+        "precio": 1500.0,
+        "categoria": "Bodega",
+        "stock": 12
     }
 ]

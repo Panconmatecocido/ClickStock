@@ -32,6 +32,12 @@ class PanelProductos(wx.Panel):
         boton_editar.Bind(wx.EVT_BUTTON, self.editar_producto)
         self.lista_productos.Bind(wx.EVT_LISTBOX, self.seleccionar_producto)
 
+        sizer_botones = wx.BoxSizer(wx.HORIZONTAL)
+        sizer_botones.Add(boton_agregar, 0, wx.RIGHT, 5)
+        sizer_botones.Add(boton_eliminar, 0, wx.RIGHT, 5)
+        sizer_botones.Add(boton_editar, 0, wx.RIGHT, 5)
+
+        # 2. Armamos el sizer principal (VERTICAL)
         sizer_principal = wx.BoxSizer(wx.VERTICAL)
         sizer_principal.Add(texto_nombre, 0, wx.ALL, 5)
         sizer_principal.Add(self.input_nombre, 0, wx.EXPAND | wx.ALL, 5)
@@ -39,13 +45,13 @@ class PanelProductos(wx.Panel):
         sizer_principal.Add(self.input_precio, 0, wx.EXPAND | wx.ALL, 5)
         sizer_principal.Add(texto_categoria, 0, wx.ALL, 5)
         sizer_principal.Add(self.combo_categoria, 0, wx.EXPAND | wx.ALL, 5)
-        sizer_principal.Add(boton_agregar, 0, wx.ALL, 5)
-        sizer_principal.Add(boton_eliminar, 0, wx.ALL, 5)
-        sizer_principal.Add(boton_editar, 0, wx.ALL, 5)
+        
+        # 3. Añadimos el sizer de los botones en lugar de cada botón por separado
+        sizer_principal.Add(sizer_botones, 0, wx.ALL, 5)
+        
         sizer_principal.Add(self.lista_productos, 1, wx.EXPAND | wx.ALL, 5)
 
         self.SetSizer(sizer_principal)
-
         self.actualizar_lista()
 
 
