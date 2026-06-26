@@ -4,33 +4,43 @@ class PanelStock(wx.Panel):
     def __init__(self, parent, sistema):
         super().__init__(parent)
         self.sistema = sistema
+
+        titulo = wx.StaticText(self, label="Agregar Stock")
+        fuente_titulo = wx.Font(14, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD)
+        titulo.SetFont(fuente_titulo)
+
+        texto_producto = wx.StaticText(self, label="Producto")
         self.combo_producto = wx.ComboBox(self, style=wx.CB_READONLY) 
+
         self.input_cantidad = wx.TextCtrl(self)
+        self.input_cantidad.SetHint("Cantidad")
+        
         self.lista_stock = wx.ListBox(self)
         self.cargar_productos()
         self.actualizar_lista()
 
-
-        boton_entrada = wx.Button(self, label = "Entrada")
-        boton_salida = wx.Button(self, label = "Salida")
-
-        texto_producto = wx.StaticText(self, label="Producto")
-        texto_cantidad = wx.StaticText(self, label="Cantidad")
+        boton_entrada = wx.Button(self, label="Agregar")
+        boton_salida = wx.Button(self, label="Sacar")
 
         boton_entrada.Bind(wx.EVT_BUTTON, self.registrar_entrada)
         boton_salida.Bind(wx.EVT_BUTTON, self.registrar_salida)
 
-        sizer_principal = wx.BoxSizer(wx.VERTICAL)
-        sizer_principal.Add(texto_producto, 0, wx.ALL, 5)
-        sizer_principal.Add(self.combo_producto, 0, wx.EXPAND | wx.ALL, 5)
-        sizer_principal.Add(texto_cantidad, 0, wx.ALL, 5)
-        sizer_principal.Add(self.input_cantidad, 0, wx.EXPAND | wx.ALL, 5)
-
         sizer_botones = wx.BoxSizer(wx.HORIZONTAL)
-        sizer_botones.Add(boton_entrada, 0, wx.EXPAND | wx.ALL, 5)
-        sizer_botones.Add(boton_salida, 0, wx.EXPAND | wx.ALL, 5)
-        sizer_principal.Add(sizer_botones, 0, wx.ALL, 5)
-        sizer_principal.Add(self.lista_stock, 1, wx.EXPAND | wx.ALL, 5)
+        sizer_botones.Add(boton_entrada, 0, wx.RIGHT, 5)
+        sizer_botones.Add(boton_salida, 0, wx.RIGHT, 5)
+
+        sizer_principal = wx.BoxSizer(wx.VERTICAL)
+
+        sizer_principal.Add(titulo, 0, wx.ALL, 10)
+
+        sizer_principal.Add(texto_producto, 0, wx.LEFT | wx.RIGHT | wx.BOTTOM, 5)
+        sizer_principal.Add(self.combo_producto, 0, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, 10)
+
+        sizer_principal.Add(self.input_cantidad, 0, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, 10)
+
+        sizer_principal.Add(sizer_botones, 0, wx.LEFT | wx.RIGHT | wx.BOTTOM, 10)
+        sizer_principal.Add(self.lista_stock, 1, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, 10)
+        
         self.SetSizer(sizer_principal)
 
     def cargar_productos(self):

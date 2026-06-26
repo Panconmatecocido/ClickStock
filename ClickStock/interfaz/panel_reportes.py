@@ -59,7 +59,9 @@ class PanelReportes(wx.Panel):
         super().__init__(parent)
         self.sistema = sistema
 
-        titulo = wx.StaticText(self, label="Reportes de Stock")
+        titulo = wx.StaticText(self, label="Reportes")
+        fuente_titulo = wx.Font(14, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD)
+        titulo.SetFont(fuente_titulo)
         texto_categorias = wx.StaticText(self, label="Categoría")
 
         self.combo_categoria = wx.ComboBox(self, style=wx.CB_READONLY)

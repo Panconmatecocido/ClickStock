@@ -6,8 +6,8 @@ class PanelCategorias(wx.Panel):
         super().__init__(parent)
         self.sistema = sistema
 
-        texto = wx.StaticText(self, label="Categorías")
-        fuente = wx.Font(18, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD)
+        texto = wx.StaticText(self, label="Agregar Categorías")
+        fuente = wx.Font(14, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD)
         texto.SetFont(fuente)
 
         self.input_categoria = wx.TextCtrl(self, style=wx.TE_PROCESS_ENTER)
