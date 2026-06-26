@@ -72,14 +72,21 @@ class VentanaPrincipal(wx.Frame):
         #Eliminar el panel actual
         for child in self.panel_contenido.GetChildren():
             child.Destroy()
+
+        sizer_actual = self.panel_contenido.GetSizer()
+
+        if sizer_actual:
+            sizer_actual.Clear(True)
         
         nuevo_panel = constructor_panel(self.panel_contenido)
+
+        if not sizer_actual:
+            sizer_actual = wx.BoxSizer(wx.VERTICAL)
+            self.panel_contenido.SetSizer(sizer_actual)
         
-        sizer = wx.BoxSizer(wx.VERTICAL)
-        sizer.Add(nuevo_panel, 1, wx.EXPAND)
-        self.panel_contenido.SetSizer(sizer)
+        sizer_actual.Add(nuevo_panel, 1, wx.EXPAND)
         self.panel_contenido.Layout()
-    
+
     def mostrar_inicio(self, event):
         self.cambiar_panel(PanelInicio)
     

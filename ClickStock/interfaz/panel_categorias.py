@@ -10,7 +10,7 @@ class PanelCategorias(wx.Panel):
         fuente = wx.Font(18, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD)
         texto.SetFont(fuente)
 
-        self.input_categoria = wx.TextCtrl(self)
+        self.input_categoria = wx.TextCtrl(self, style=wx.TE_PROCESS_ENTER)
         self.input_categoria.SetHint("Ingrese nueva categoría")
 
         boton_agregar = wx.Button(self, label="Agregar")

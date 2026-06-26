@@ -37,13 +37,17 @@ class PanelStock(wx.Panel):
         self.combo_producto.Clear()
         for producto in self.sistema.obtener_productos():
             self.combo_producto.Append(producto.nombre)
+
+        if self.combo_producto.GetCount() > 0:
+            self.combo_producto.SetSelection(0)
+
     
     def actualizar_lista(self):
         self.lista_stock.Clear()
         for producto in self.sistema.obtener_productos():
             texto = (
-            f"{producto.nombre} | "
-            f"{producto.stock}")
+                f"{producto.nombre} | Stock: {producto.stock}"
+            )
             self.lista_stock.Append(texto)
 
     def registrar_entrada(self, event):
@@ -55,10 +59,16 @@ class PanelStock(wx.Panel):
             cantidad = int(self.input_cantidad.GetValue())
         except ValueError:
             return
+        
+        if cantidad <= 0:
+            wx.MessageBox("La cantidad debe ser mayor a cero", "Error", wx.OK | wx.ICON_ERROR)
+            return
 
         producto = self.sistema.obtener_productos()[indice]
-        producto.stock += cantidad
+        producto.ingresar_stock(cantidad)
+        self.sistema.guardar_productos()
         self.actualizar_lista()
+        self.input_cantidad.SetValue("")
 
     def registrar_salida(self, event):
         indice = self.combo_producto.GetSelection()
@@ -69,8 +79,16 @@ class PanelStock(wx.Panel):
             cantidad = int(self.input_cantidad.GetValue())
         except ValueError:
             return
+        
+        if cantidad <= 0:
+            wx.MessageBox("La cantidad debe ser mayor a cero", "Error", wx.OK | wx.ICON_ERROR)
+            return
 
         producto = self.sistema.obtener_productos()[indice]
         if producto.stock >= cantidad:
-            producto.stock -= cantidad
+            producto.retirar_stock(cantidad)
+        else:
+            wx.MessageBox("Stock insuficiente", "Error", wx.OK | wx.ICON_ERROR)
+        self.sistema.guardar_productos()
         self.actualizar_lista()
+        self.input_cantidad.SetValue("")

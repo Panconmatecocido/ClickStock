@@ -1,1 +1,14 @@
-[]
+[
+    {
+        "nombre": "Pan",
+        "precio": 4500.0,
+        "categoria": "Panaderia",
+        "stock": 20
+    },
+    {
+        "nombre": "Cebolla",
+        "precio": 800.0,
+        "categoria": "Verduleria",
+        "stock": 50
+    }
+]
