@@ -38,13 +38,13 @@ class PanelCreditos(wx.Panel):
         )
 
         info.WebSite = (
-            "https://github.com/",
+            "https://github.com/Panconmatecocido/ClickStock.git",
             "Repositorio del proyecto"
         )
 
         info.Developers = [
-            "Iván Rodriguez",
-            "Materia: Programación Orientada a Objetos",
+            "Iván Rodriguez "
+            "Materia: Programación Orientada a Objetos "
             "Universidad: Universidad Nacional de Pilar(UNPILAR)"
         ]
 
