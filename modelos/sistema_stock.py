@@ -14,7 +14,7 @@ class SistemaStock:
         self.cargar_productos()
     
     def crear_base(self):
-        conexion = sqlite3.connect("ClickStock/datos/stock.db")
+        conexion = sqlite3.connect("datos/stock.db")
         cursor = conexion.cursor()
 
         cursor.execute("""
@@ -62,7 +62,7 @@ class SistemaStock:
         del self.productos[indice]
 
     def guardar_categorias(self):
-        conexion = sqlite3.connect("ClickStock/datos/stock.db")
+        conexion = sqlite3.connect("datos/stock.db")
         cursor = conexion.cursor()
         cursor.execute("DELETE FROM categorias")
         
@@ -75,7 +75,7 @@ class SistemaStock:
         conexion.close()
 
     def cargar_categorias(self):
-        conexion = sqlite3.connect("ClickStock/datos/stock.db")
+        conexion = sqlite3.connect("datos/stock.db")
         cursor = conexion.cursor()
         cursor.execute("SELECT nombre FROM categorias")
         datos = cursor.fetchall()
@@ -87,7 +87,7 @@ class SistemaStock:
         conexion.close()
     
     def guardar_productos(self):
-        conexion = sqlite3.connect("ClickStock/datos/stock.db")
+        conexion = sqlite3.connect("datos/stock.db")
         cursor = conexion.cursor()
         cursor.execute("DELETE FROM productos")
         
@@ -109,7 +109,7 @@ class SistemaStock:
         conexion.close()
 
     def cargar_productos(self):
-        conexion = sqlite3.connect("ClickStock/datos/stock.db")
+        conexion = sqlite3.connect("datos/stock.db")
         cursor = conexion.cursor()
         cursor.execute("""
 
