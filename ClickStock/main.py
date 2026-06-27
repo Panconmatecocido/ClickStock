@@ -1,9 +1,13 @@
 import wx
-from interfaz.ventana_principal import VentanaPrincipal
+
 from modelos.sistema_stock import SistemaStock
+from interfaz.splash import SplashScreen
+
 
 app = wx.App()
-sistema = SistemaStock()  # Crear instancia del sistema de stock
-frame = VentanaPrincipal(sistema)
-frame.Show()
+
+sistema = SistemaStock()
+
+SplashScreen(sistema)
+
 app.MainLoop()
