@@ -1,6 +1,7 @@
 Requisitos:
 
-- Python 3.14
+- Python 3.13 (recomendado)
+- wxPython 4.2.3
 
 Instalación:
 
@@ -8,4 +9,4 @@ pip install -r requirements.txt
 
 Ejecución:
 
-main.py
+python main.py
