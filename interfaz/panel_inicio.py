@@ -45,7 +45,7 @@ class PanelInicio(wx.Panel):
             "✔ Gestión de categorías",
             "✔ Gestión de productos",
             "✔ Control de stock",
-            "✔ Reportes y estadísticas"
+            "✔ Reportes"
 
         ]
         lista = wx.BoxSizer(wx.VERTICAL)
