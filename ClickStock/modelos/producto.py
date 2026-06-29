@@ -1,19 +1,17 @@
 class Producto:
 
     def __init__(self, nombre, precio, categoria):
-
+        #Inicializa el producto con sus datos base. El stock arranca en cero por defecto
         self.nombre = nombre
         self.precio = precio
         self.categoria = categoria
-
         self.stock = 0
 
     def __str__(self):
-
+        #Si imprimís el objeto se ve el nombre del producto
         return self.nombre
     
     def ingresar_stock(self, cantidad):
-
         self.stock += cantidad
 
     def retirar_stock(self, cantidad):
