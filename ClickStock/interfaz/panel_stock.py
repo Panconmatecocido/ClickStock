@@ -5,40 +5,44 @@ class PanelStock(wx.Panel):
         super().__init__(parent)
         self.sistema = sistema
 
+        #Titulo del panel
         titulo = wx.StaticText(self, label="Agregar Stock")
         fuente_titulo = wx.Font(14, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD)
         titulo.SetFont(fuente_titulo)
 
         texto_producto = wx.StaticText(self, label="Producto")
+        #El style=wx.CB_READONLY evita que el usuario escriba cualquier cosa en el menú desplegable
         self.combo_producto = wx.ComboBox(self, style=wx.CB_READONLY) 
 
         self.input_cantidad = wx.TextCtrl(self)
-        self.input_cantidad.SetHint("Cantidad")
+        self.input_cantidad.SetHint("Cantidad") #El texto gris de fondo que sirve de guia
         
         self.lista_stock = wx.ListBox(self)
         self.cargar_productos()
         self.actualizar_lista()
 
+        #Botones de acción
         boton_entrada = wx.Button(self, label="Agregar")
         boton_salida = wx.Button(self, label="Sacar")
 
+        #Vinculamos los botones a sus funciones correspondientes
         boton_entrada.Bind(wx.EVT_BUTTON, self.registrar_entrada)
         boton_salida.Bind(wx.EVT_BUTTON, self.registrar_salida)
 
+        #Sizer horizontal para poner los dos botones uno al lado del otro
         sizer_botones = wx.BoxSizer(wx.HORIZONTAL)
         sizer_botones.Add(boton_entrada, 0, wx.RIGHT, 5)
         sizer_botones.Add(boton_salida, 0, wx.RIGHT, 5)
 
+        #Sizer principal vertical que apila todos los elementos para que queden prolijos
         sizer_principal = wx.BoxSizer(wx.VERTICAL)
-
         sizer_principal.Add(titulo, 0, wx.ALL, 10)
-
         sizer_principal.Add(texto_producto, 0, wx.LEFT | wx.RIGHT | wx.BOTTOM, 5)
         sizer_principal.Add(self.combo_producto, 0, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, 10)
-
         sizer_principal.Add(self.input_cantidad, 0, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, 10)
-
         sizer_principal.Add(sizer_botones, 0, wx.LEFT | wx.RIGHT | wx.BOTTOM, 10)
+
+        #La lista ocupa todo el espacio libre que queda abajo (proporción 1 y EXPAND)
         sizer_principal.Add(self.lista_stock, 1, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, 10)
         
         self.SetSizer(sizer_principal)
@@ -63,20 +67,23 @@ class PanelStock(wx.Panel):
     def registrar_entrada(self, event):
         indice = self.combo_producto.GetSelection()
         if indice == wx.NOT_FOUND:
-            return
+            return #Si no hay nada seleccionado, salimos sin hacer nada
         
-        try:
+        try: #Validamos que lo que metieron en el cuadro sea un número entero
             cantidad = int(self.input_cantidad.GetValue())
         except ValueError:
-            return
+            return #Si metieron letras, se frena el proceso de una
         
         if cantidad <= 0:
             wx.MessageBox("La cantidad debe ser mayor a cero", "Error", wx.OK | wx.ICON_ERROR)
             return
 
+        #Buscamos el producto por su posición, sumamos el stock y guardamos en la base
         producto = self.sistema.obtener_productos()[indice]
         producto.ingresar_stock(cantidad)
         self.sistema.guardar_productos()
+        
+        #Limpiamos el input y refrescamos la lista visual
         self.actualizar_lista()
         self.input_cantidad.SetValue("")
 

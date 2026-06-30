@@ -7,19 +7,22 @@ from interfaz.panel_stock import PanelStock
 from interfaz.panel_reportes import PanelReportes
 from interfaz.panel_creditos import PanelCreditos
 
+    #La ventana que contiene todos los paneles
 class VentanaPrincipal(wx.Frame):
     def __init__(self, sistema):
+        #Definimos el tamaño de la ventana, el logo y la distribución de los paneles
         super().__init__(None, title="ClickStock", size=(1000, 600))
         # Icono de la ventana
         ruta_icono = os.path.join(
-            os.path.dirname(__file__),   # carpeta "interfaz"
-            "..",                        # subir a la carpeta principal
-            "Imagen",
-            "logo.png"
+            os.path.dirname(__file__),   #Desde esta carpeta
+            "..",                        #Sube a la carpeta principal
+            "Imagen",                    #Entra a la carpeta Imagen
+            "logo.png"                   #Busca el archivo logo.png
         )
-        ruta_icono = os.path.abspath(ruta_icono)
+        ruta_icono = os.path.abspath(ruta_icono) #Lo hacemos ruta absoluta
         self.SetIcon(wx.Icon(ruta_icono, wx.BITMAP_TYPE_PNG))
 
+        #Referencia al sistema de stock para usarla en los paneles
         self.sistema = sistema
         panel_principal = wx.Panel(self)
 
@@ -37,16 +40,19 @@ class VentanaPrincipal(wx.Frame):
         # Agregar paneles al sizer horizontal
         sizer_horizontal.Add(self.panel_menu, 0, wx.EXPAND)
         sizer_horizontal.Add(self.panel_contenido, 1, wx.EXPAND)
-
         panel_principal.SetSizer(sizer_horizontal)
-        
+
+        #Dibuja los botones
         self.crear_menu()
-        
+
+        #Muestra pantalla de inicio
         self.mostrar_inicio(None)
 
+        #Metodo que crea los botones de navegación en el panel izquierdo y les asigna sus funciones
     def crear_menu(self):
         sizer_menu = wx.BoxSizer(wx.VERTICAL)
 
+        #Instanciamos los botones del menú
         boton_inicio = wx.Button(self.panel_menu, label="Inicio")
         boton_categorias = wx.Button(self.panel_menu, label="Categorías")
         boton_productos = wx.Button(self.panel_menu, label="Productos")
@@ -54,6 +60,7 @@ class VentanaPrincipal(wx.Frame):
         boton_reportes = wx.Button(self.panel_menu, label="Reportes")
         boton_creditos = wx.Button(self.panel_menu, label="Creditos")
 
+        #Los agregamos al sizer vertical dándoles un margen de 10 píxeles para que no queden pegados
         sizer_menu.Add(boton_inicio, 0, wx.EXPAND | wx.ALL, 10)
         sizer_menu.Add(boton_categorias, 0, wx.EXPAND | wx.ALL, 10)
         sizer_menu.Add(boton_productos, 0, wx.EXPAND | wx.ALL, 10)
@@ -63,7 +70,7 @@ class VentanaPrincipal(wx.Frame):
 
         self.panel_menu.SetSizer(sizer_menu)
 
-        # Eventos para los botones
+        #Vinculamos el click de cada botón con el método que tiene que ejecutar
         boton_inicio.Bind(wx.EVT_BUTTON, self.mostrar_inicio)
         boton_categorias.Bind(wx.EVT_BUTTON, self.mostrar_categorias)
         boton_productos.Bind(wx.EVT_BUTTON, self.mostrar_productos)
@@ -71,25 +78,32 @@ class VentanaPrincipal(wx.Frame):
         boton_reportes.Bind(wx.EVT_BUTTON, self.mostrar_reportes)
         boton_creditos.Bind(wx.EVT_BUTTON, self.mostrar_creditos)
 
+        #Metodo que elimina el panel derecho actual para dibujar un panel nuevo
     def cambiar_panel(self, constructor_panel):
         # Eliminar el panel actual
         for child in self.panel_contenido.GetChildren():
             child.Destroy()
 
         sizer_actual = self.panel_contenido.GetSizer()
-
+        
+        #Si el sizer ya existia lo limpiamos
         if sizer_actual:
             sizer_actual.Clear(True)
         
+        #Instanciamos el nuevo panel pasandole el contenedor derecho como padre
         nuevo_panel = constructor_panel(self.panel_contenido)
 
+        #Si no hay un sizer asignado lo creamos de cero
         if not sizer_actual:
             sizer_actual = wx.BoxSizer(wx.VERTICAL)
             self.panel_contenido.SetSizer(sizer_actual)
         
+        #Ponemos el panel nuevo al sizer y le decimos a wxPython que refresque el diseño visual
         sizer_actual.Add(nuevo_panel, 1, wx.EXPAND)
         self.panel_contenido.Layout()
 
+        """METODOS DISPARADORES DE PANTALLAS"""
+        #Usan funciones lambda para ponerle "self.sistema" a los paneles
     def mostrar_inicio(self, event):
         self.cambiar_panel(PanelInicio)
     
