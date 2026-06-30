@@ -15,7 +15,7 @@ class SistemaStock:
     
     def crear_base(self):
         #Creamos el archivo de la base de datos
-        conexion = sqlite3.connect("ClickStock/datos/stock.db")
+        conexion = sqlite3.connect("datos/stock.db")
         cursor = conexion.cursor()
 
         #Creamos la tabla de categorias si no existe
@@ -72,7 +72,7 @@ class SistemaStock:
 
         #Sincroniza y vuelca las categorías de la memoria en la base de datos
     def guardar_categorias(self):
-        conexion = sqlite3.connect("ClickStock/datos/stock.db")
+        conexion = sqlite3.connect("datos/stock.db")
         cursor = conexion.cursor()
         #Limpia la tabla para evitar duplicaciones antes de reescribir
         cursor.execute("DELETE FROM categorias")
@@ -88,7 +88,7 @@ class SistemaStock:
 
         #Trae las categorias desde la base de datos y las levanta en memoria
     def cargar_categorias(self):
-        conexion = sqlite3.connect("ClickStock/datos/stock.db")
+        conexion = sqlite3.connect("datos/stock.db")
         cursor = conexion.cursor()
         cursor.execute("SELECT nombre FROM categorias")
         datos = cursor.fetchall()
@@ -104,7 +104,7 @@ class SistemaStock:
 
         #Pasa los productos de la memoria a la base de datos
     def guardar_productos(self):
-        conexion = sqlite3.connect("ClickStock/datos/stock.db")
+        conexion = sqlite3.connect("datos/stock.db")
         cursor = conexion.cursor()
         #Limpiamos la tabla para arrancar de cero antes de guardar
         cursor.execute("DELETE FROM productos")
@@ -129,7 +129,7 @@ class SistemaStock:
 
         #Trae los productos de la base y los engancha con su categoría correspondiente
     def cargar_productos(self):
-        conexion = sqlite3.connect("ClickStock/datos/stock.db")
+        conexion = sqlite3.connect("datos/stock.db")
         cursor = conexion.cursor()
         cursor.execute("""
 

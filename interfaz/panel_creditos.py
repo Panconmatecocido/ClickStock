@@ -11,7 +11,7 @@ class PanelCreditos(wx.Panel):
         self.log = log
         wx.Panel.__init__(self, parent, -1)
 
-        b = wx.Button(self, -1, "Ayuda", (50,50))
+        b = wx.Button(self, -1, "Acerca de", (50,50))
         self.Bind(wx.EVT_BUTTON, self.OnButton, b)
 
 
